@@ -1,0 +1,57 @@
+.keyboard{
+    width: max-content;
+    margin: 0 auto;
+    border: 1px solid black;
+    padding: 6px;
+    background-color: #82878c;
+}
+
+.keyboard__row{
+    display: flex;
+    
+}
+
+.key{
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background-color: #3a424a;
+    border-radius: 5px;
+    margin: 3px;
+    color:white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.key:hover{
+    background-color: #4ad46a;
+}
+
+.controlKey{
+    background-color: #2f3030;
+}
+
+.Backspace, .CapsLock,.Shift, .Enter 
+{
+    flex-grow: 1;
+}
+
+.space{
+    flex-grow: 10.5;
+}
+
+textarea{
+    height: 200px;
+    font-size: 20px;
+    font-style: bold;
+}
+
+.wrapper{
+    padding-top: 20px;
+    margin: 0 auto;
+    width: max-content;
+}
+
+
