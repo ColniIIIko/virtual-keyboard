@@ -97,17 +97,81 @@ function appInit()
 
 function generateKeyboardData(wrapper)
 {
-    let lang = window.navigator.language;
-    lang = lang == 'ru-RU' ? 'Ru' : 'Eng';
-    fetch('/json/keyboardControls.json')
-        .then((response) => response.json())
-        .then((data) => {
-                fetch('/json/keyboard.json')
-                .then((response) => response.json())
-                .then((keys) =>{
-                    initKeyboard(keys,lang,data,wrapper);
-                })
-        })
+    
+    let keys = [
+        {
+            "keysRu": "ё1234567890-=",
+            "keysRuShift" : "Ё!\"№;%:?*()_+",
+            "keysEng": "`1234567890-=",
+            "keysEngShift": "~!@#$%^&*()_+",
+            "keysCode" : ["Backquote","Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0",
+                        "Minus","Equal"]
+        },
+        {
+            "keysRu": "йцукенгшщзхъ\\",
+            "keysRuShift" : "ЙЦУКЕНГШЩЗХЪ/",
+            "keysEng": "qwertyuiop[]\\",
+            "keysEngShift": "QWERTYUIOP{}|",
+            "keysCode" : ["","","","","","","","","","","BracketLeft",
+                "BracketRight","BackSlash"]
+        },
+        {
+            "keysRu": "фывапролджэ",
+            "keysRuShift" : "ФЫВАПРОЛДЖЭ",
+            "keysEng": "asdfghjkl;'",
+            "keysEngShift": "ASDFGHJKL:\"",
+            "keysCode" : ["","","","","","","","","","Semicolon",
+                "Quote"]
+        },
+        {
+            "keysRu": "ячсмитьбю.",
+            "keysRuShift" : "ЯЧСМИТЬБЮ,",
+            "keysEng": "zxcvbnm,./",
+            "keysEngShift": "ZXCVBNM<>?",
+            "keysCode" : ["","","","","","","","Comma","Period","Slash"]
+        },
+        {
+            "keysRu": "",
+            "keysRuShift" : "",
+            "keysEng": "",
+            "keysEngShift": "",
+            "keysCode": []
+        }
+    ]
+    let data = [
+        {
+            "controlsLeft" : [],
+            "controlsLeftCode" : [],
+            "controlsRight": ["Backspace"],
+            "controlsRightCode": ["Backspace"]
+        },
+        {
+            "controlsLeft" : ["Tab"],
+            "controlsLeftCode" : ["Tab"],
+            "controlsRight": [],
+            "controlsRightCode": []
+        },
+        {
+            "controlsLeft" : ["CapsLock"],
+            "controlsLeftCode" : ["CapsLock"],
+            "controlsRight": ["Enter"],
+            "controlsRightCode": ["Enter"]
+        },
+        {
+            "controlsLeft" : ["Shift"],
+            "controlsLeftCode" : ["ShiftLeft"],
+            "controlsRight": ["▲","Shift"],
+            "controlsRightCode" : ["ArrowUp","ShiftRight"]
+        },
+        {
+            "controlsLeft" : ["Ctrl","Win","Alt"," "],
+            "controlsLeftCode" : ["ControlLeft","MetaLeft","AltLeft","Space"],
+            "controlsRight": ["Alt","◄","▼","►","Ctrl"],
+            "controlsRightCode": ["AltLeft","ArrowLeft","ArrowDown","ArrowRight","ControlLeft"]
+        }
+    ]
+    initKeyboard(keys,lang,data,wrapper);
+
 }
 
 function initKeyboard(keys,lang,controls,wrapper)
