@@ -1,0 +1,32 @@
+[
+    {
+        "controlsLeft" : [],
+        "controlsLeftCode" : [],
+        "controlsRight": ["Backspace"],
+        "controlsRightCode": ["Backspace"]
+    },
+    {
+        "controlsLeft" : ["Tab"],
+        "controlsLeftCode" : ["Tab"],
+        "controlsRight": [],
+        "controlsRightCode": []
+    },
+    {
+        "controlsLeft" : ["CapsLock"],
+        "controlsLeftCode" : ["CapsLock"],
+        "controlsRight": ["Enter"],
+        "controlsRightCode": ["Enter"]
+    },
+    {
+        "controlsLeft" : ["Shift"],
+        "controlsLeftCode" : ["ShiftLeft"],
+        "controlsRight": ["▲","Shift"],
+        "controlsRightCode" : ["ArrowUp","ShiftRight"]
+    },
+    {
+        "controlsLeft" : ["Ctrl","Win","Alt"," "],
+        "controlsLeftCode" : ["ControlLeft","MetaLeft","AltLeft"," "],
+        "controlsRight": ["Alt","◄","▼","►","Ctrl"],
+        "controlsRightCode": ["AltLeft","ArrowLeft","ArrowDown","ArrowRight","ControlLeft"]
+    }
+]

@@ -1,0 +1,40 @@
+[
+    {
+        "keysRu": "ё1234567890-=",
+        "keysRuShift" : "Ё!\"№;%:?*()_+",
+        "keysEng": "`1234567890-=",
+        "keysEngShift": "~!@#$%^&*()_+",
+        "keysCode" : ["Backquote","Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0",
+                    "Minus","Equal"]
+    },
+    {
+        "keysRu": "йцукенгшщзхъ\\",
+        "keysRuShift" : "ЙЦУКЕНГШЩЗХЪ/",
+        "keysEng": "qwertyuiop[]\\",
+        "keysEngShift": "QWERTYUIOP{}|",
+        "keysCode" : ["","","","","","","","","","","BracketLeft",
+            "BracketRight","BackSlash"]
+    },
+    {
+        "keysRu": "фывапролджэ",
+        "keysRuShift" : "ФЫВАПРОЛДЖЭ",
+        "keysEng": "asdfghjkl;'",
+        "keysEngShift": "ASDFGHJKL:\"",
+        "keysCode" : ["","","","","","","","","","Semicolon",
+            "Quote"]
+    },
+    {
+        "keysRu": "ячсмитьбю.",
+        "keysRuShift" : "ЯЧСМИТЬБЮ,",
+        "keysEng": "zxcvbnm,./",
+        "keysEngShift": "ZXCVBNM<>?",
+        "keysCode" : ["","","","","","","","Comma","Period","Slash"]
+    },
+    {
+        "keysRu": "",
+        "keysRuShift" : "",
+        "keysEng": "",
+        "keysEngShift": "",
+        "keysCode": []
+    }
+]

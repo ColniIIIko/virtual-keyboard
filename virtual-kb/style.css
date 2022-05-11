@@ -1,5 +1,5 @@
 .keyboard{
-    width: max-content;
+    width: 690px;
     margin: 0 auto;
     border: 1px solid black;
     padding: 6px;
@@ -23,17 +23,15 @@
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
+    
 }
 
-.key:hover{
-    background-color: #4ad46a;
-}
 
 .controlKey{
     background-color: #2f3030;
 }
 
-.Backspace, .CapsLock,.Shift, .Enter 
+.Backspace, .CapsLock,.ShiftLeft,.ShiftRight, .Enter ,.Tab
 {
     flex-grow: 1;
 }
@@ -43,9 +41,11 @@
 }
 
 textarea{
+    width: 702px;
     height: 200px;
     font-size: 20px;
     font-style: bold;
+    resize: none;
 }
 
 .wrapper{

@@ -1,44 +1,41 @@
-let text = document.createElement('div');
-text.innerText = 'Прошу проверить данную работу в последнюю очередь, т.к в данный момент она очевидно не доделана(Спасибо за понимание)'
-document.querySelector('body').append(text);
-function generateKeyboard(wrapper,lang = '')
+let lang = window.navigator.language;
+lang = lang == 'ru-RU' ? 'ru' : 'eng';
+let shift = '';
+isAltPressed = false;
+isControlPressed = false;
+
+
+function EventHandlers()
 {
-    let board = document.createElement('div');
-    board.className = 'keyboard';
-    lang = lang == '' ? window.navigator.language : lang;
-    let rows = lang == 'ru-RU' ? generateKeyboardRowsRu() : generateKeyboardRowsEng(); 
-    for(let row of rows)
-    {
-        let keyboardRow = document.createElement('div');
-        keyboardRow.className = 'keyboard__row';
-        for(let key of row)
-        {
-            let keyboardKey = document.createElement('div');
-            keyboardKey.className = `key ${key}`
-            keyboardKey.className += key.length != 1 || key == '◄'
-                                                     || key == '▲'
-                                                     || key == '▼'
-                                                     || key == '►' ? ' controlKey' : '';
-            if(key === '')
-            {
-                keyboardKey.className += ' space';
-            }
-            keyboardKey.className += ' '+ lang;
-            keyboardKey.innerText = key;
-            keyboardKey.addEventListener('click',EnterKey);
-            keyboardRow.append(keyboardKey);
-        }
-        board.append(keyboardRow);
-    }
-    wrapper.append(board);
     document.addEventListener('keydown',KeyControls);
-    document.addEventListener('keyup',(event) => {document.querySelector(`.${event.key}`).style.background = '#3a424a';});
+    document.addEventListener('keyup',(event) => {
+        let key = document.querySelector(`.${event.code}`);
+        if(key.classList[2] != 'controlKey')
+            key.closest('div').style.background = '#3a424a';
+        else
+        {
+            key.style = '';
+            KeyControlsUp(event);
+            
+        }});
     document.addEventListener('keydown',changeLocale);
 }
 
-function changeLocale(event)
+function KeyControlsUp(event)
 {
-
+    if( event.code == 'ShiftLeft' || event.code == 'ShiftRight')
+    {
+        shift = shift == '' ? 'Shift' : '';
+        keyboardKeysView();
+    }
+    if(event.code == 'AltLeft')
+    {
+        isAltPressed = false;
+    }
+    if(event.code == 'ControlLeft')
+    {
+        isControlPressed = false;
+    }
 }
 
 function EnterKey(event)
@@ -49,48 +46,175 @@ function EnterKey(event)
 
 function KeyControls(event)
 {
-    console.log(document.querySelector(`.key .${event.key}`));
-    console.log(String(`.${event.key}`));
-    if(document.querySelector(`.${event.key}`).classList[2] != 'controlKey')
-        document.querySelector('textarea').value += event.key;
-    document.querySelector(`.${event.key}`).style.background = '#4ad46a';
+    if(document.querySelector(`.${event.code}`).classList[2] != 'controlKey')
+    {
+        console.log(document.querySelector(`.${event.code}`).querySelector('.'+lang + shift).innerText);
+        document.querySelector('textarea').blur();
+        document.querySelector('textarea').value += document.querySelector(`.${event.code}`).querySelector('.'+lang + shift).innerText;
+    }
+    else
+    {
+        document.querySelector('textarea').focus();
+        if(event.code == 'AltLeft')
+        {
+            isAltPressed = true;
+        }
+        if(event.code == 'ControlLeft')
+        {
+            isControlPressed = true;
+        }
+        if(event.code == 'CapsLock' || event.code == 'ShiftLeft' || event.code == 'ShiftRight')
+        {
+            shift = shift == '' ? 'Shift' : '';
+            keyboardKeysView();
+        }
+        if((isAltPressed && event.code  == 'ControlLeft') || (isControlPressed && event.code  == 'AltLeft'))
+        {
+            //event.preventDefault();
+            lang = lang == 'ru' ? 'eng' : 'ru';
+            keyboardKeysView();
+        }
+    }
+    document.querySelector(`.${event.code}`).closest('div').style.background = '#4ad46a';
 }
 
-
-function generateKeyboardRowsEng()
-{
-    let row1 = ['\`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace'];
-    let row2 = ['Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\','Del'];
-    let row3 = ['CapsLock','a','s','d','f','g','h','j','k','l',';','\'','Enter'];
-    let row4 = ['Shift','z','x','c','v','b','n','m',',','.','/','▲','Shift'];
-    let row5 = ['Ctrl','Win','Alt','','Alt','◄','▼','►','Ctrl'];
-
-    return [row1,row2,row3,row4,row5];
-}
-
-function generateKeyboardRowsRu()
-{
-    let row1 = ['\`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace'];
-    let row2 = ['Tab','й','ц','у','к','е','н','г','ш','щ','з','х','ъ','\\','Del'];
-    let row3 = ['CapsLock','ф','ы','в','а','п','р','о','л','д','ж','э','Enter'];
-    let row4 = ['Shift','я','ч','с','м','и','т','ь','б','ю','.','▲','Shift'];
-    let row5 = ['Ctrl','Win','Alt','','Alt','◄','▼','►','Ctrl'];
-
-    return [row1,row2,row3,row4,row5];
-}
 
 function appInit()
 {
     let wrapper = document.createElement('div');
     wrapper.className = 'wrapper';
     document.querySelector('body').append(wrapper);
-    generateKeyboard(wrapper);
     let textArea = document.createElement('textarea');
-    textArea.style.width = document.querySelector('.keyboard').offsetWidth + 'px';
-    document.querySelector('.keyboard').before(textArea);
+    wrapper.append(textArea);
+    generateKeyboardData(wrapper);
+}
+
+function generateKeyboardData(wrapper)
+{
+    let lang = window.navigator.language;
+    lang = lang == 'ru-RU' ? 'Ru' : 'Eng';
+    fetch('/json/keyboardControls.json')
+        .then((response) => response.json())
+        .then((data) => {
+                fetch('/json/keyboard.json')
+                .then((response) => response.json())
+                .then((keys) =>{
+                    initKeyboard(keys,lang,data,wrapper);
+                })
+        })
+}
+
+function initKeyboard(keys,lang,controls,wrapper)
+{
+    let board = document.createElement('div');
+    board.className = 'keyboard';
+    for(let i = 0; i < 5; i++)
+    {
+        let keyboardRow = document.createElement('div');
+        keyboardRow.className = 'keyboard__row';
+        if(controls[i].controlsLeft.length != 0 )
+            createControlKey(keyboardRow,controls[i],"Left");
+
+        createKey(keyboardRow,keys[i],lang);
+
+        if(controls[i].controlsRight.length != 0 )
+            createControlKey(keyboardRow,controls[i],"Right");
+            
+        board.append(keyboardRow);
+    }
+    wrapper.append(board);
+    createText(wrapper);
+    keyboardKeysView();
+    EventHandlers();
+}
+
+function createText(wrapper)
+{
+    let info = document.createElement('div');
+    info.innerText = 'Ctrl + Alt to change language';
+    wrapper.append(info);
+}
+
+function keyboardKeysView()
+{
+    let keysToIterate = document.querySelectorAll('div.changeable');
+    keysToIterate.forEach(key => {
+        key.childNodes.forEach(ele => {ele.style.display = 'none'});
+        key.querySelector('.'+lang.toLowerCase()+shift).style.display = 'inline';
+    })
+}
+
+
+
+function createControlKey(keyboardRow,key,side)
+{
+
+    key[`controls${side}`].forEach((ele,index)=>{
+        let keyboardKey = document.createElement('div');
+        keyboardKey.className = key[`controls${side}Code`][index]+ ' ';
+        keyboardKey.className += 'key '
+        keyboardKey.className += 'controlKey';
+        if(ele == ' ')
+        {
+            keyboardKey.className += ' space';
+        }
+        keyboardKey.innerText = ele;
+        keyboardKey.addEventListener('click',EnterKey);
+        keyboardKey.addEventListener('mouseover',(event) => {event.target.style.background = '#4ad46a'});
+        keyboardKey.addEventListener('mouseout',(event) => {event.target.style.background = ''});
+        keyboardRow.append(keyboardKey);
+    })
+    
+}
+
+
+function createKey(keyboardRow,keys,lang)
+{
+    let keyRu, keyRuShift, keyEng, keyEngShift;
+    for(let i = 0; i< keys['keysRu'].length; i++)
+    {
+        let keyboardKey = document.createElement('div');
+        [keyRu, keyRuShift, keyEng, keyEngShift] = createSubKeys(keys,i);
+        keyboardKey.className = 'key changeable';
+        if(keys['keysCode'][i] != '')
+        {
+            keyboardKey.className += ' ' + keys['keysCode'][i];
+        }else
+        {
+            keyboardKey.className += ` Key${keys['keysEng'][i].toUpperCase()}`;
+        }
+        keyboardKey.addEventListener('click',EnterKey);
+        keyboardKey.addEventListener('mouseover',(event) => {event.target.closest('div').style.background = '#4ad46a'});
+        keyboardKey.addEventListener('mouseout',(event) => {event.target.closest('div').style.background = ''});
+        keyboardKey.append(keyRu, keyRuShift, keyEng, keyEngShift);
+        keyboardRow.append(keyboardKey);
+    }
+}
+
+function createSubKeys(keys,index)
+{
+    let keyRu = document.createElement('span');
+    keyRu.innerText = keys['keysRu'][index];
+    keyRu.className = 'ru'
+    keyRu.style.display = 'none';
+
+    let keyRuShift = document.createElement('span');
+    keyRuShift.innerText = keys['keysRuShift'][index];
+    keyRuShift.className = 'ruShift'
+    keyRuShift.style.display = 'none';
+
+    let keyEng = document.createElement('span');
+    keyEng.innerText = keys['keysEng'][index];
+    keyEng.className = 'eng';
+    keyEng.style.display = 'none';
+
+    let keyEngShift = document.createElement('span');
+    keyEngShift.innerText = keys['keysEngShift'][index];
+    keyEngShift.className = 'engShift';
+    keyEngShift.style.display = 'none';
+
+    return [keyRu, keyRuShift, keyEng, keyEngShift];
 }
 
 appInit();
-
-
 
