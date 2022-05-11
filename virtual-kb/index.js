@@ -18,7 +18,6 @@ function EventHandlers()
             KeyControlsUp(event);
             
         }});
-    document.addEventListener('keydown',changeLocale);
 }
 
 function KeyControlsUp(event)
@@ -48,10 +47,17 @@ function KeyControls(event)
 {
     if(document.querySelector(`.${event.code}`).classList[2] != 'controlKey')
     {
-        console.log(document.querySelector(`.${event.code}`).querySelector('.'+lang + shift).innerText);
         document.querySelector('textarea').blur();
+        if(event.code != 'Space')
+        {
         document.querySelector('textarea').value += document.querySelector(`.${event.code}`).querySelector('.'+lang + shift).innerText;
+        }
+        else
+        {
+            document.querySelector('textarea').value += ' ';
+        }
     }
+
     else
     {
         document.querySelector('textarea').focus();
@@ -153,10 +159,9 @@ function createControlKey(keyboardRow,key,side)
         let keyboardKey = document.createElement('div');
         keyboardKey.className = key[`controls${side}Code`][index]+ ' ';
         keyboardKey.className += 'key '
-        keyboardKey.className += 'controlKey';
-        if(ele == ' ')
+        if(ele != ' ')
         {
-            keyboardKey.className += ' space';
+            keyboardKey.className += 'controlKey';
         }
         keyboardKey.innerText = ele;
         keyboardKey.addEventListener('click',EnterKey);

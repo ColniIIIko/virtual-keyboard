@@ -25,7 +25,7 @@
     },
     {
         "controlsLeft" : ["Ctrl","Win","Alt"," "],
-        "controlsLeftCode" : ["ControlLeft","MetaLeft","AltLeft"," "],
+        "controlsLeftCode" : ["ControlLeft","MetaLeft","AltLeft","Space"],
         "controlsRight": ["Alt","◄","▼","►","Ctrl"],
         "controlsRightCode": ["AltLeft","ArrowLeft","ArrowDown","ArrowRight","ControlLeft"]
     }
